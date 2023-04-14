@@ -28,10 +28,13 @@ import com.intellij.util.ui.UIUtil;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * @author Mikhail Golubev
  */
+@SuppressWarnings("UseOfObsoleteCollectionType")
 public class JiraRepositoryEditor extends BaseRepositoryEditor<JiraRepository> {
   private EditorTextField mySearchQueryField;
   private JBLabel mySearchLabel;
@@ -90,12 +93,23 @@ public class JiraRepositoryEditor extends BaseRepositoryEditor<JiraRepository> {
     }
 
     if (myRepository.isInCloud()) {
+      myUsernameLabel.setVisible(true);
+      myUserNameText.setVisible(true);
       myUsernameLabel.setText(TaskBundle.message("label.email"));
+      myPasswordLabel.setText(TaskBundle.message("label.api.token"));
+      myUseHttpAuthenticationCheckBox.setVisible(false);
+    }
+    else if (!myUseHttpAuthenticationCheckBox.isSelected()) {
+      myUsernameLabel.setVisible(false);
+      myUserNameText.setVisible(false);
       myPasswordLabel.setText(TaskBundle.message("label.api.token"));
     }
     else {
+      myUsernameLabel.setVisible(true);
+      myUserNameText.setVisible(true);
       myUsernameLabel.setText(TaskBundle.message("label.username"));
       myPasswordLabel.setText(TaskBundle.message("label.password"));
+      myUseHttpAuthenticationCheckBox.setVisible(true);
     }
   }
 }
