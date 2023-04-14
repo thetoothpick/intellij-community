@@ -60,6 +60,7 @@ public abstract class TaskRepository {
    * be filtered internally in {@link TaskManager#getIssues}.
    */
   public static final int NATIVE_SEARCH = 0x0010;
+  public static final int BEARER_TOKEN_AUTHORIZATION = 0x0020;
 
   public static final Pattern TIME_SPENT_PATTERN = Pattern.compile("([0-9]+)h ([0-9]+)m");
 
@@ -378,7 +379,8 @@ public abstract class TaskRepository {
         LOGIN_ANONYMOUSLY,
         STATE_UPDATING,
         TIME_MANAGEMENT,
-        NATIVE_SEARCH}
+        NATIVE_SEARCH,
+        BEARER_TOKEN_AUTHORIZATION}
     ) int feature) {
     return (getFeatures() & feature) != 0;
   }
@@ -390,7 +392,8 @@ public abstract class TaskRepository {
       LOGIN_ANONYMOUSLY,
       STATE_UPDATING,
       TIME_MANAGEMENT,
-      NATIVE_SEARCH})
+      NATIVE_SEARCH,
+      BEARER_TOKEN_AUTHORIZATION})
   protected int getFeatures() {
     return NATIVE_SEARCH;
   }

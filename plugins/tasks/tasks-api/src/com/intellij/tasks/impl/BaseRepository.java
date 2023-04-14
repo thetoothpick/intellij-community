@@ -30,6 +30,7 @@ public abstract class BaseRepository extends TaskRepository {
   protected String myPassword = "";
   protected boolean myUseProxy;
   protected boolean myUseHttpAuthentication;
+  protected boolean myUseBearerTokenAuthentication;
   protected boolean myLoginAnonymously;
   protected CustomTaskState myPreferredOpenTaskState;
   protected CustomTaskState myPreferredCloseTaskState;
@@ -44,6 +45,7 @@ public abstract class BaseRepository extends TaskRepository {
     myUsername = other.getUsername();
     myUseProxy = other.myUseProxy;
     myUseHttpAuthentication = other.myUseHttpAuthentication;
+    myUseBearerTokenAuthentication = other.myUseBearerTokenAuthentication;
     myLoginAnonymously = other.myLoginAnonymously;
   }
 
@@ -142,6 +144,14 @@ public abstract class BaseRepository extends TaskRepository {
 
   public void setUseHttpAuthentication(boolean useHttpAuthentication) {
     myUseHttpAuthentication = useHttpAuthentication;
+  }
+
+  public boolean isUseBearerTokenAuthentication() {
+    return myUseBearerTokenAuthentication;
+  }
+
+  public void setUseBearerTokenAuthentication(boolean useBearerTokenAuthentication) {
+    myUseBearerTokenAuthentication = useBearerTokenAuthentication;
   }
 
   public boolean isLoginAnonymously() {

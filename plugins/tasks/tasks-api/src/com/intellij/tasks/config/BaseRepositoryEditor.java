@@ -52,6 +52,7 @@ public class BaseRepositoryEditor<T extends BaseRepository> extends TaskReposito
   private JBCheckBox myUseProxy;
   private JButton myProxySettingsButton;
   protected JCheckBox myUseHttpAuthenticationCheckBox;
+  protected JCheckBox myUseBearerTokenAuthenticationCheckBox;
 
   protected JPanel myCustomPanel;
   private JBCheckBox myAddCommitMessage;
@@ -98,6 +99,9 @@ public class BaseRepositoryEditor<T extends BaseRepository> extends TaskReposito
 
     myUseHttpAuthenticationCheckBox.setSelected(repository.isUseHttpAuthentication());
     myUseHttpAuthenticationCheckBox.setVisible(repository.isSupported(TaskRepository.BASIC_HTTP_AUTHORIZATION));
+
+    myUseBearerTokenAuthenticationCheckBox.setSelected(repository.isUseBearerTokenAuthentication());
+    myUseBearerTokenAuthenticationCheckBox.setVisible(repository.isSupported(TaskRepository.BEARER_TOKEN_AUTHORIZATION));
 
     myLoginAnonymouslyJBCheckBox.setVisible(repository.isSupported(TaskRepository.LOGIN_ANONYMOUSLY));
     myLoginAnonymouslyJBCheckBox.setSelected(repository.isLoginAnonymously());
@@ -286,6 +290,7 @@ public class BaseRepositoryEditor<T extends BaseRepository> extends TaskReposito
     myRepository.setShared(myShareUrlCheckBox.isSelected());
     myRepository.setUseProxy(myUseProxy.isSelected());
     myRepository.setUseHttpAuthentication(myUseHttpAuthenticationCheckBox.isSelected());
+    myRepository.setUseBearerTokenAuthentication(myUseBearerTokenAuthenticationCheckBox.isSelected());
     myRepository.setLoginAnonymously(myLoginAnonymouslyJBCheckBox.isSelected());
 
     myRepository.setShouldFormatCommitMessage(myAddCommitMessage.isSelected());

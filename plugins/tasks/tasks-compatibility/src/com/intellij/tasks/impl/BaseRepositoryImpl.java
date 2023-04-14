@@ -78,6 +78,10 @@ public abstract class BaseRepositoryImpl extends BaseRepository {
       client.getParams().setAuthenticationPreemptive(true);
       client.getState().setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(getUsername(), getPassword()));
     }
+    else if (isUseBearerTokenAuthentication()) {
+      client.getParams().setAuthenticationPreemptive(true);
+      client.getState().clearCredentials();
+    }
     else {
       client.getState().clearCredentials();
       client.getParams().setAuthenticationPreemptive(false);
@@ -139,6 +143,14 @@ public abstract class BaseRepositoryImpl extends BaseRepository {
   public void setUseHttpAuthentication(boolean useHttpAuthentication) {
     if (useHttpAuthentication != isUseHttpAuthentication()) {
       super.setUseHttpAuthentication(useHttpAuthentication);
+      reconfigureClient();
+    }
+  }
+
+  @Override
+  public void setUseBearerTokenAuthentication(boolean useBearerTokenAuthentication) {
+    if (useBearerTokenAuthentication != isUseBearerTokenAuthentication()) {
+      super.setUseBearerTokenAuthentication(useBearerTokenAuthentication);
       reconfigureClient();
     }
   }

@@ -19,6 +19,7 @@ import com.intellij.tasks.jira.soap.JiraLegacyApi;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.xmlb.annotations.Tag;
 import org.apache.commons.httpclient.*;
+import org.apache.commons.httpclient.auth.HttpAuthenticator;
 import org.apache.commons.httpclient.cookie.CookiePolicy;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.xmlrpc.CommonsXmlRpcTransport;
@@ -267,8 +268,14 @@ public class JiraRepository extends BaseRepositoryImpl {
     // IDEA-128824, IDEA-128706 Use cookie authentication only for JIRA on-Demand
     // TODO Make JiraVersion more suitable for such checks
     if (BASIC_AUTH_ONLY || !isInCloud()) {
-      // to override persisted settings
-      setUseHttpAuthentication(true);
+      if (!isInCloud() && isUseBearerTokenAuthentication()) {
+        setUseHttpAuthentication(false);
+        method.addRequestHeader(new Header(HttpAuthenticator.WWW_AUTH_RESP, "Bearer " + myPassword));
+      }
+      else {
+        // to override persisted settings
+        setUseHttpAuthentication(true);
+      }
     }
     else {
       boolean enableBasicAuthentication = !(isRestApiSupported() && containsCookie(client, AUTH_COOKIE_NAME));
@@ -371,7 +378,7 @@ public class JiraRepository extends BaseRepositoryImpl {
   protected int getFeatures() {
     int features = super.getFeatures();
     if (isRestApiSupported()) {
-      return features | TIME_MANAGEMENT | STATE_UPDATING;
+      return features | TIME_MANAGEMENT | STATE_UPDATING | BEARER_TOKEN_AUTHORIZATION;
     }
     else {
       return features & ~NATIVE_SEARCH & ~STATE_UPDATING & ~TIME_MANAGEMENT;
